@@ -1,10 +1,10 @@
-# Developer Manual
-
 ## System Architecture Overview
-The LLM-based Grading System is structured with a three-tier architecture to optimize separation of concerns and enhance system scalability:
+The LLM-based Grading System is structured with a three-tier architecture to optimize separation of concerns and enhance system scalability. It also integrates Tesseract OCR for image detection to extract text from images:
+
 - **Front-end**: Utilizes Thymeleaf for server-side rendering, optimizing interaction with HTML views.
 - **Back-end**: Built on Spring Boot, managing all business logic, data processing, and server-side operations efficiently.
 - **Database**: Uses MySQL, providing robust data storage capabilities and support for complex queries.
+- **Image Detection**: Integrates Tesseract OCR for extracting text from images, enhancing the system's ability to process and analyze image-based submissions.
 
 ## Environment Setup
 - **Java 21**: Required for leveraging advanced features and ensuring compatibility with the latest security standards.
@@ -19,6 +19,9 @@ The LLM-based Grading System is structured with a three-tier architecture to opt
 
 ## Testing Framework
 - **JUnit**: Implement unit tests for all new features and bug fixes. Run tests via IntelliJ or Gradle to ensure functionality and prevent regressions.
+
+## Image Detection
+- **Tesseract OCR**: The project utilizes Tesseract for Optical Character Recognition (OCR) to extract text from images. Ensure Tesseract is installed and properly configured on your system. Update the `tessdata` path in the code if necessary.
 
 ## Troubleshooting and SQL Commands
 ### Common SQL Issue
