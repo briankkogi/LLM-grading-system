@@ -98,11 +98,3 @@ When submissions include large texts or documents, the default TEXT type column 
      - Clearly state why the submission is rejected, such as “Plagiarism detected”, “Off-topic submission”, or “Incomplete analysis”.
 3. **Notify Student**:
      - Submit the rejection with your comments. The student will receive a notification along with the reasons for rejection, providing them an opportunity to understand the deficiencies and make necessary corrections.
-
-## Notice
-Due to limitations in the API, we had to hard code the rubric in the code as the API could not process it.
-
-The program checks the assignment submitted based on the rubric it has been given. For example, it was to check the significance of the assignment to the HIPAA laws.
-
-- It graded the relevant assignment highly at 98/100 and provided feedback.
-- It graded the irrelevant assignment at 0/100 and provided feedback saying it did not meet the assignment requirements.
