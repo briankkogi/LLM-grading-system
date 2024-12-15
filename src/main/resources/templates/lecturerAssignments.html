@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Lecturer Assignments</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans">
+    <!-- Header -->
+    <header class="bg-black text-white w-full py-4 shadow-md">
+        <div class="max-w-7xl mx-auto px-6">
+            <h1 class="text-3xl font-bold">Your Created Assignments</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+            <!-- Assignments Table -->
+            <div class="bg-white rounded-lg shadow-lg p-6 border border-gray-300">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Assignments</h2>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="px-4 py-2 text-gray-600 font-semibold border">Title</th>
+                            <th class="px-4 py-2 text-gray-600 font-semibold border">Description</th>
+                            <th class="px-4 py-2 text-gray-600 font-semibold border">Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="assignment : ${assignments}" class="border-b hover:bg-gray-100">
+                            <td class="px-4 py-2 border" th:text="${assignment.title}"></td>
+                            <td class="px-4 py-2 border" th:text="${assignment.description}"></td>
+                            <td class="px-4 py-2 border" th:text="${assignment.dueDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Centered Back to Dashboard Button -->
+        <div class="back-links flex justify-center mt-8">
+            <a class="back-link bg-black text-white font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-900 transition duration-200 inline-block text-center"
+               th:href="@{/lecturer/dashboard}">
+                Back to Dashboard
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-400 text-center py-4">
+        <p>&copy; 2024 Your Institution. All rights reserved.</p>
+    </footer>
+</body>
+</html>

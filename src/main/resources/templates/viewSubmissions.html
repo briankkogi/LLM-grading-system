@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Submissions</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        min-height: 100vh;
+        background: #000000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #333;
+    }
+
+    .container {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+        width: 100%;
+        max-width: 1000px;
+        overflow-x: auto;
+    }
+
+    h1 {
+        font-size: 1.875rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        background-color: #000;
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 1rem 0 2rem 0;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 1rem;
+        border: 1px solid #e5e7eb;
+    }
+
+    th {
+        background-color: #f3f4f6;
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    tr:hover {
+        background: #f9fafb;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        resize: vertical;
+        min-height: 100px;
+        background: #ffffff;
+        color: #333;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: #a3a3a3;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .grade-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .feedback-toggle, .reject-button, .grade-button {
+        background-color: #000;
+        border: 1px solid #333;
+        color: white;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border-radius: 6px;
+        transition: all 0.15s ease;
+        font-size: 0.875rem;
+    }
+
+    .feedback-toggle:hover, .reject-button:hover, .grade-button:hover {
+        background-color: #222;
+        border-color: #666;
+        transform: translateY(-1px);
+    }
+
+    .feedback-content {
+        display: none;
+        padding: 0.75rem;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+    .feedback-content.show {
+        display: block;
+    }
+
+    .grade-button:disabled {
+        background-color: #ccc;
+        border-color: #999;
+        color: #666;
+        cursor: not-allowed;
+    }
+
+    .reject-form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        resize: vertical;
+        background: #ffffff;
+        color: #333;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin-bottom: 0.5rem;
+    }
+
+    .reject-form textarea:focus {
+        outline: none;
+        border-color: #a3a3a3;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .back-link {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background-color: #000;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.15s ease;
+        border: 1px solid #333;
+    }
+
+    .back-link:hover {
+        background-color: #222;
+        border-color: #666;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1.5rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+        }
+
+        textarea {
+            min-height: 80px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Submissions for: <span th:text="${assignment.title}"></span></h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Content</th>
+                    <th>Submitted At</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="submission : ${submissions}">
+                    <td th:text="${submission.student.username}"></td>
+                    <td>
+                        <textarea readonly rows="4" th:text="${submission.content}"></textarea>
+                    </td>
+                    <td th:text="${submission.submittedAt}"></td>
+                    <td>
+                        <div class="grade-section">
+                            <span th:if="${submission.grade != null}">
+                                <strong>Grade:</strong> <span th:text="${submission.grade.grade}"></span>/100
+                                <button class="feedback-toggle" 
+                                        th:onclick="'toggleFeedback(' + ${submission.id} + ')'">
+                                    View Feedback
+                                </button>
+                                <div class="feedback-content" th:id="'feedback-' + ${submission.id}">
+                                    <strong>Feedback:</strong><br>
+                                    <span th:text="${submission.grade.feedback}"></span>
+                                </div>
+                            </span>
+                            <span th:if="${submission.grade == null}">Not Graded</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span th:if="${submission.rejected}" style="color: red;">Rejected: <span th:text="${submission.rejectionReason}"></span></span>
+                        <span th:if="${!submission.rejected}" style="color: green;">Accepted</span>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 10px;">
+                            <!-- Grade Form -->
+                            <form th:action="@{/lecturer/submissions/{submissionId}/grade(submissionId=${submission.id})}" method="post">
+                                <button type="submit" class="grade-button" th:disabled="${submission.grade != null}">
+                                    Grade
+                                </button>
+                            </form>
+                            <!-- Reject Form -->
+                            <form th:if="${!submission.rejected}" 
+                                  th:action="@{/submissions/{id}/reject(id=${submission.id})}" 
+                                  method="post" 
+                                  class="reject-form">
+                                <button type="button" class="reject-button" onclick="toggleRejectForm(this)">Reject</button>
+                                <div class="reject-reason" style="display: none; margin-top: 10px;">
+                                    <textarea name="rejectionReason" placeholder="Rejection reason..." rows="3" required></textarea>
+                                    <button type="submit" class="reject-button" style="margin-top: 10px;">Confirm Reject</button>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="back-links">
+            <a class="back-link" th:href="@{/lecturer/dashboard}">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleFeedback(index) {
+            const feedbackContent = document.getElementById('feedback-' + index);
+            feedbackContent.classList.toggle('show');
+        }
+
+        function toggleRejectForm(button) {
+            const form = button.closest('.reject-form');
+            const reasonDiv = form.querySelector('.reject-reason');
+            reasonDiv.style.display = reasonDiv.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
+
